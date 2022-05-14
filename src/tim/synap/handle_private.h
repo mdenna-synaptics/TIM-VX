@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2021 Vivante Corporation
+*    Copyright (c) 2022 Synaptics Inc.
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -22,21 +22,36 @@
 *
 *****************************************************************************/
 
-#ifndef TIM_LITE_HANDLE_H_
-#define TIM_LITE_HANDLE_H_
+#pragma once
 
-#include <memory>
+#include <mutex>
+#include "tim/lite/handle.h"
 
 namespace tim {
 namespace lite {
 
-class Handle {
-public:
-  virtual ~Handle() {}
-  virtual bool Flush() = 0;
-  virtual bool Invalidate() = 0;
+enum class HandleFlushType {
+    HandleFlush = 0,
+    HandleInvalidate = 1
+};
+
+class HandleImpl : public Handle {
+ public:
+  HandleImpl(uint8_t* buffer, size_t size)
+      : buffer_(buffer), buffer_size_(size) {}
+
+  uint32_t Index() { return index_; }
+  bool Flush() override;
+  bool Invalidate() override;
+
+  ~HandleImpl();
+
+ private:
+  void SetIndex(uint32_t idx) { index_ = idx; }
+  uint8_t* buffer_ = nullptr;
+  size_t buffer_size_ = 0;
+  uint32_t index_;
 };
 
 }
 }
-#endif

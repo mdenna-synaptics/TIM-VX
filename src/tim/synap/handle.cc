@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2021 Vivante Corporation
+*    Copyright (c) 2022 Synaptics Inc.
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -22,21 +22,32 @@
 *
 *****************************************************************************/
 
-#ifndef TIM_LITE_HANDLE_H_
-#define TIM_LITE_HANDLE_H_
+#include "handle_private.h"
 
+#include <cassert>
+#include <cstdint>
 #include <memory>
+#include <iostream>
+#include <string.h>
+#include "execution_private.h"
+
+#define _64_BYTES_ALIGN      (64ul)
 
 namespace tim {
 namespace lite {
 
-class Handle {
-public:
-  virtual ~Handle() {}
-  virtual bool Flush() = 0;
-  virtual bool Invalidate() = 0;
-};
+bool HandleImpl::Flush() {
+    return false;
+}
+
+bool HandleImpl::Invalidate() {
+    return false;
+}
+
+HandleImpl::~HandleImpl() {
+    buffer_ = nullptr;
+    buffer_size_ = 0;
+}
 
 }
 }
-#endif

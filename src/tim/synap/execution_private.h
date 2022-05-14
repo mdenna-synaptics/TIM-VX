@@ -21,36 +21,48 @@
 *    DEALINGS IN THE SOFTWARE.
 *
 *****************************************************************************/
+#ifndef TIM_LITE_EXECUTION_PRIVATE_H_
+#define TIM_LITE_EXECUTION_PRIVATE_H_
 
-#ifndef TIM_LITE_EXECUTION_H_
-#define TIM_LITE_EXECUTION_H_
-
-#include <cstdint>
 #include <vector>
 #include <memory>
-#include "tim/lite/handle.h"
+#include <map>
+
+#include "tim/lite/execution.h"
+#include "handle_private.h"
+
+#include "synap/npu.hpp"
+#include "synap/network.hpp"
+#include "synap/allocator.hpp"
+#include "synap/buffer.hpp"
+#include "synap/ebg_utils.h"
 
 namespace tim {
 namespace lite {
 
-class Execution {
+class ExecutionImpl : public Execution {
  public:
-  virtual ~Execution() {}
-  static std::shared_ptr<Execution> Create(const void* executable,
-                                           size_t executable_size);
-  virtual std::shared_ptr<Handle> CreateInputHandle(uint32_t in_idx,
-                                                    uint8_t* buffer,
-                                                    size_t size) = 0;
-  virtual std::shared_ptr<Handle> CreateOutputHandle(uint32_t out_idx,
-                                                     uint8_t* buffer,
-                                                     size_t size) = 0;
-  virtual Execution& BindInputs(
-      const std::vector<std::shared_ptr<Handle>>& handles) = 0;
-  virtual Execution& BindOutputs(
-      const std::vector<std::shared_ptr<Handle>>& handles) = 0;
-  virtual Execution& UnBindInput(const std::shared_ptr<Handle>& Handle) = 0;
-  virtual Execution& UnBindOutput(const std::shared_ptr<Handle>& handle) = 0;
-  virtual bool Trigger() = 0;
+  ExecutionImpl(const void* executable, size_t executable_size);
+  ~ExecutionImpl();
+  std::shared_ptr<Handle> CreateInputHandle(uint32_t in_idx, uint8_t* buffer,
+                                            size_t size) override;
+  std::shared_ptr<Handle> CreateOutputHandle(uint32_t out_idx, uint8_t* buffer,
+                                             size_t size) override;
+  Execution& BindInputs(
+      const std::vector<std::shared_ptr<Handle>>& handles) override;
+  Execution& BindOutputs(
+      const std::vector<std::shared_ptr<Handle>>& handles) override;
+  Execution& UnBindInput(const std::shared_ptr<Handle>& Handle) override;
+  Execution& UnBindOutput(const std::shared_ptr<Handle>& handle) override;
+  bool Trigger() override;
+  bool IsValid() const { return valid_; };
+  synaptics::synap::Network * network() { return network_; };
+
+ private:
+  std::vector<std::shared_ptr<Handle>> input_handles_;
+  std::vector<std::shared_ptr<Handle>> output_handles_;
+  bool valid_;
+  synaptics::synap::Network * network_;
 };
 
 }  // namespace lite
