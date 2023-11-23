@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2022 Vivante Corporation
+*    Copyright (c) 2020-2023 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -23,17 +23,17 @@
 *****************************************************************************/
 #include "tim/vx/ops/roi_align.h"
 
-#include "direct_map_op_impl.h"
+#include "builtin_op_impl.h"
 #include "vsi_nn_pub.h"
 
 namespace tim {
 namespace vx {
 namespace ops {
 
-ROI_Align::ROI_Align(Graph* graph, int32_t output_height, int32_t output_width,
+RoiAlign::RoiAlign(Graph* graph, int32_t output_height, int32_t output_width,
           float height_ratio, float width_ratio, int32_t height_sample_num,
-          int32_t width_sample_num)
-    : DirectMapOp(graph, VSI_NN_OP_ROI_ALIGN),
+          int32_t width_sample_num, DataLayout input_layout)
+    : BuiltinOp(graph, VSI_NN_OP_ROI_ALIGN, 0, 0, input_layout),
       output_height_(output_height),
       output_width_(output_width),
       height_ratio_(height_ratio),
@@ -49,11 +49,12 @@ ROI_Align::ROI_Align(Graph* graph, int32_t output_height, int32_t output_width,
   this->impl()->node()->nn_param.roi_align.width_sample_num = width_sample_num;
 }
 
-std::shared_ptr<Operation> ROI_Align::Clone(
+std::shared_ptr<Operation> RoiAlign::Clone(
     std::shared_ptr<Graph>& graph) const {
-  return graph->CreateOperation<ROI_Align>(
+  return graph->CreateOperation<RoiAlign>(
       this->output_height_, this->output_width_, this->height_ratio_,
-      this->width_ratio_, this->height_sample_num_, this->width_sample_num_);
+      this->width_ratio_, this->height_sample_num_, this->width_sample_num_,
+      this->impl_->layout_);
 }
 
 }  // namespace ops

@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2022 Vivante Corporation
+*    Copyright (c) 2020-2023 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -23,7 +23,7 @@
 *****************************************************************************/
 #include "tim/vx/ops/topk.h"
 
-#include "direct_map_op_impl.h"
+#include "builtin_op_impl.h"
 #include "type_utils.h"
 #include "vsi_nn_pub.h"
 
@@ -31,13 +31,15 @@ namespace tim {
 namespace vx {
 namespace ops {
 
-Topk::Topk(Graph* graph, uint32_t k)
-    : DirectMapOp(graph, VSI_NN_OP_TOPK) {
+Topk::Topk(Graph* graph, uint32_t k, int32_t axis)
+    : BuiltinOp(graph, VSI_NN_OP_TOPK) {
   this->impl()->node()->nn_param.topk.k = k;
+  this->impl()->node()->nn_param.topk.axis = axis;
 }
 
 std::shared_ptr<Operation> Topk::Clone(std::shared_ptr<Graph>& graph) const {
-  return graph->CreateOperation<Topk>(this->impl()->node()->nn_param.topk.k);
+  return graph->CreateOperation<Topk>(this->impl()->node()->nn_param.topk.k,
+  this->impl()->node()->nn_param.topk.axis);
 }
 
 }  // namespace ops

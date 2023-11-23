@@ -33,7 +33,7 @@ namespace vx {
 class GraphSynap : public GraphImpl {
  public:
     GraphSynap(ContextImpl* context, const CompileOption& options = CompileOption::DefaultOptions):
-        GraphImpl(context, options) 
+        GraphImpl(context, options)
     {}
 
   bool Compile() override;

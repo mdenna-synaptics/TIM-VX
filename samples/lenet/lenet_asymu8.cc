@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2020 Vivante Corporation
+*    Copyright (c) 2020-2023 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -38,7 +38,6 @@
 #include "tim/vx/ops/softmax.h"
 #include "tim/vx/tensor.h"
 
-// This is a "0" when viewed as 28x28
 std::vector<uint8_t> input_data = {
     0,   0,   0,   0,   0,   0,   0,   0,   6,   0,   2,   0,   0,   8,   0,
     3,   0,   7,   0,   2,   0,   0,   0,   10,  0,   0,   0,   0,   0,   0,

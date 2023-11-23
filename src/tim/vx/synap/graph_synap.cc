@@ -71,7 +71,7 @@ bool GraphSynap::Compile() {
         return false;
     }
     VSILOGD("compile nbg_size: %zu", nbg_size);
-    
+
     // generate binary graph does't require input data
     vector<uint8_t> nbg_buf(nbg_size);
     if (!CompileToBinary(nbg_buf.data(), &nbg_size)) {
@@ -79,7 +79,7 @@ bool GraphSynap::Compile() {
         return false;
     }
     VSILOGD("CompileToBinary done");
-    
+
     uint8_t* ebg_buffer{};
     size_t ebg_size = nbg_to_ebg(nbg_buf.data(), nbg_size, &ebg_buffer, false);
     if (ebg_size == 0 || ebg_buffer == nullptr) {
@@ -119,7 +119,7 @@ bool GraphSynap::Run() {
         Tensor* t = outputs_tensor_[ix++].get();
         t->CopyDataToTensor(out.data(), out.size());
     }
-    
+
     return true;
 }
 

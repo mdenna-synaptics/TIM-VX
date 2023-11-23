@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2022 Vivante Corporation
+*    Copyright (c) 2020-2023 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -25,7 +25,7 @@
 #define TIM_VX_OPS_ROI_POOL_H_
 
 #include <array>
-#include "tim/vx/direct_map_op.h"
+#include "tim/vx/builtin_op.h"
 #include "tim/vx/types.h"
 
 namespace tim {
@@ -33,21 +33,21 @@ namespace vx {
 namespace ops {
 
 /**
- * ## ROI_POOL
+ * ## RoiPool
  *
  * Select and scale the feature map of each region of interest to a unified output
  * size by max-pooling.
- * 
+ *
  *    pool_type : only support max-pooling  (MAX)
- *    scale : The ratio of image to feature map (Range: 0 < scale <= 1) 
+ *    scale : The ratio of image to feature map (Range: 0 < scale <= 1)
  *    size : The size of roi pooling (height/width)
  *
  */
 
-class ROI_Pool : public DirectMapOp {
+class RoiPool : public BuiltinOp {
  public:
-  ROI_Pool(Graph* graph, PoolType type, float scale,
-            const std::array<uint32_t, 2>& size);
+  RoiPool(Graph* graph, PoolType type, float scale, const std::array<uint32_t, 2>& size,
+          DataLayout input_layout = DataLayout::WHCN);
 
   std::shared_ptr<Operation> Clone(
       std::shared_ptr<Graph>& graph) const override;
@@ -57,6 +57,8 @@ class ROI_Pool : public DirectMapOp {
   const float scale_;
   std::array<uint32_t, 2> size_;
 };
+
+using ROI_Pool = RoiPool;
 
 }  // namespace ops
 }  // namespace vx

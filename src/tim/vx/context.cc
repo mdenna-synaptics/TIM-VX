@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2020 Vivante Corporation
+*    Copyright (c) 2020-2023 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -25,12 +25,13 @@
 
 #include "context_private.h"
 #include "graph_private.h"
-#if TIM_VX_ENABLE_SYNAP
-#include "synap/graph_synap.h"
-#endif
 #include "tim/vx/graph.h"
 #include "tim/vx/compile_option.h"
 #include "vsi_nn_pub.h"
+
+#if TIM_VX_ENABLE_SYNAP
+#include "synap/graph_synap.h"
+#endif
 
 namespace tim {
 namespace vx {
@@ -59,6 +60,14 @@ std::shared_ptr<Graph> ContextImpl::CreateGraph() {
 
 std::shared_ptr<Graph> ContextImpl::CreateGraph(const CompileOption& options) {
   return std::make_shared<GraphImpl>(this, options);
+}
+
+bool ContextImpl::isClOnly() {
+    return VSI_NN_HW_EVIS_NONE == context_->config.evis.ver;
+}
+
+bool ContextImpl::hasSP() {
+    return 0 != context_->config.support_stream_processor;
 }
 
 }  // namespace vx

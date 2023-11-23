@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2022 Vivante Corporation
+*    Copyright (c) 2020-2023 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -26,7 +26,7 @@
 
 #include <array>
 
-#include "tim/vx/direct_map_op.h"
+#include "tim/vx/builtin_op.h"
 #include "tim/vx/types.h"
 
 namespace tim {
@@ -39,11 +39,12 @@ namespace ops {
  * Finds values and indices of the k largest entries for the last dimension.
  *
  * - k : Number of top elements to look for along the last dimension.
+ * -axis : Dimension on which to do th sort. Default is 0.
  */
 
-class Topk : public DirectMapOp {
+class Topk : public BuiltinOp {
  public:
-  Topk(Graph* graph, uint32_t k);
+  Topk(Graph* graph, uint32_t k, int32_t axis = 0);
 
   std::shared_ptr<Operation> Clone(std::shared_ptr<Graph>& graph) const override;
 };

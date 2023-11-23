@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *    Copyright (c) 2020 Vivante Corporation
+ *    Copyright (c) 2020-2023 Vivante Corporation
  *
  *    Permission is hereby granted, free of charge, to any person obtaining a
  *    copy of this software and associated documentation files (the "Software"),
@@ -28,7 +28,7 @@
 
 #include "ops/op_layout_inference.h"
 #include "permute_vector.h"
-#include "direct_map_op_impl.h"
+#include "builtin_op_impl.h"
 
 namespace tim {
 namespace transform {
@@ -69,7 +69,8 @@ class TransposeLayoutInfer : public OpLayoutInfer {
           context_->infer_graph_->CreateOperation<tim::vx::ops::Transpose>(
               final_pv->AsStdVec());
       transpose_op->BindInput(infer_input);
-      auto infer_out = CreateOutputsTensor(final_pv);
+      //  The layout after final_pv permute is the default sequence
+      auto infer_out = CreateOutputsTensor(MakeShared(perm.size()));
       transpose_op->BindOutput(infer_out[0]);
     }
     context_->SetPermuteVector(op_->impl()->OutputsTensor()[0], MakeShared(perm.size()));

@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2022 Vivante Corporation
+*    Copyright (c) 2020-2023 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -50,7 +50,7 @@ TEST(GatherElements, shape_3_2_1_int32_axis_0) {
   std::vector<int32_t> in_data = {
       1, 2, 3, 4, 5, 6,
   };
-  //The index value greater than rank-1 is regarded as rank-1
+
   std::vector<int32_t> indices = {
       1,
       2,
@@ -97,7 +97,7 @@ TEST(GatherElements, shape_3_2_1_int32_axis_1) {
   std::vector<int32_t> in_data = {
       1, 2, 3, 4, 5, 6,
   };
-  //The index value greater than rank-1 is regarded as rank-1
+
   std::vector<int32_t> indices = {
       1,
       2,
@@ -144,7 +144,7 @@ TEST(GatherElements, shape_3_2_1_float32_axis_2) {
   std::vector<float> in_data = {
       1, 2, 3, 4, 5, 6,
   };
-  //The index value greater than rank-1 is regarded as rank-1
+
   std::vector<int32_t> indices = {
       1,
       2,

@@ -1,6 +1,6 @@
 /****************************************************************************
 *
-*    Copyright (c) 2020 Vivante Corporation
+*    Copyright (c) 2020-2023 Vivante Corporation
 *
 *    Permission is hereby granted, free of charge, to any person obtaining a
 *    copy of this software and associated documentation files (the "Software"),
@@ -83,7 +83,7 @@ std::vector<std::vector<char>> load_input_data(std::vector<std::string> filename
         fin.close();
         input_data.assign(buffer, buffer + input_size_bytes[i]);
         Data.push_back(input_data);
-        free(buffer);
+        delete []buffer;
     }
    }
     return Data;
