@@ -1,4 +1,4 @@
-if(NOT EXISTS ${SYNAP_DIR})
+if(NOT ${TIM_VX_ENABLE_SYNAP} AND NOT EXISTS ${SYNAP_DIR})
     message(FATAL_ERROR "not existing SYNAP_DIR: ${SYNAP_DIR}")
 endif()
 
@@ -22,10 +22,16 @@ else()
     set(PLATFORM x86_64-linux-gcc)
 endif()
 
-set(TIM_VX_USE_EXTERNAL_OVXLIB ON)
-set(TIM_VX_ENABLE_VIPLITE OFF)
-set(OVXLIB_LIB ${SYNAP_DIR}/lib/${PLATFORM}/libovxlib.so)
-set(OVXLIB_INC ${SYNAP_DIR}/include/ovxlib)
-set(OVXDRV_INCLUDE_DIRS
-    ${SYNAP_DIR}/include
-    ${SYNAP_DIR}/include/CL)
+message("TIM_VX_USE_EXTERNAL_OVXLIB:${TIM_VX_USE_EXTERNAL_OVXLIB}")
+
+# only check for standalone tim-vx build,
+# synap integration build always set this config
+if(NOT ${TIM_VX_USE_EXTERNAL_OVXLIB})
+    set(TIM_VX_USE_EXTERNAL_OVXLIB ON)
+    set(TIM_VX_ENABLE_VIPLITE OFF)
+    set(OVXLIB_LIB ${SYNAP_DIR}/lib/${PLATFORM}/libovxlib.so)
+    set(OVXLIB_INC ${SYNAP_DIR}/include/ovxlib)
+    set(OVXDRV_INCLUDE_DIRS
+        ${SYNAP_DIR}/include
+        ${SYNAP_DIR}/include/CL)
+endif()
